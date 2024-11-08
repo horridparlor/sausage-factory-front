@@ -3,13 +3,17 @@ import { theme } from './styles/Theme';
 import './styles/montserrat.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BrowserRouter, Routes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import HomePage from './HomePage';
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Routes></Routes>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
       </BrowserRouter>
       <ToastContainer position="bottom-right" autoClose={2000} />
     </ThemeProvider>

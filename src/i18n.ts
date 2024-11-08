@@ -12,12 +12,6 @@ i18n.use(initReactI18next).init({
     fi: {
       translation: fi,
     },
-    ru: {
-      translation: ru,
-    },
-    jp: {
-      translation: jp,
-    },
   },
   lng: 'en',
   interpolation: {
