@@ -1,46 +1,79 @@
-# Getting Started with Create React App
+# Setta frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Getting started
 
-## Available Scripts
+### Environment variables
 
-In the project directory, you can run:
+Copy the contents of `.env.example` to `.env` and fill in missing environment variables.
 
-### `npm start`
+### VSCode extensions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+TSP for API docs
+https://marketplace.visualstudio.com/items?itemName=typespec.typespec-vscode
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Prettier for formatting
+https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
 
-### `npm test`
+### Develop
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+npm install
+npm run dev
+```
 
-### `npm run build`
+### Linting
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+npm run lint:check
+npm run lint:write (autofix)
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Formatting
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+npm run format:check
+npm run format:write (autofix)
+```
 
-### `npm run eject`
+### E2E Tests
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+npm run test:playwright
+npm run test:playwright:report (view test result report)
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## API CLIENT
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+We use [TypeSpec](https://typespec.io/docs) as a tool to generate openapi docs. We also generate a typesafe api client from the openapi docs using [openapi-typescript](https://openapi-ts.dev/introduction) and [openapi-fetch](https://openapi-ts.dev/openapi-fetch/).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Updates
 
-## Learn More
+1. Run `npm install` inside `./api`.
+2. Update api definitions inside `./api/main.tsp`.
+3. Run `npm run api:generate` to generate the openapi schema and api client.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Files
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Generated openapi schema is found at `./api/tsp-output/@typespec/openapi3/openapi.yaml`.
+
+Generated typesafe api client is found at `./src/api/client.ts`.
+
+## Translations
+
+We use [i80next](https://www.i18next.com/overview/getting-started) hooks for translations.
+
+```tsx
+function TranslatedComponent() {
+  const { t } = useTranslation();
+
+  return <div>{t('EXAMPLE')}</div>;
+}
+```
+
+Translations need to be manually added/updated inside the `src/locales/<lang>.json` files. New languages need to be registered in `src/i18n.ts`.
+
+## Production build
+
+```
+npm run build
+```
