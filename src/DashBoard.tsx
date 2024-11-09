@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SausageIcon from './icons/burned-sausage.svg';
 import { useWarnings, clearWarnings } from './hooks/warnings';
+import ArrowWithText from './components/common/Arrow';
 
 interface ErrorData {
   icon: string;
@@ -50,17 +52,43 @@ const DashBoard: React.FC = () => {
       bgcolor={theme.palette.background.default}
       padding={4}
     >
+      <Box
+        sx={{
+          height: '20%',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <ArrowWithText />
+      </Box>
       {/* Production Flow Line */}
-      <Box display="flex" alignItems="center" gap={4} position="relative">
+      <Box
+        display="flex"
+        alignItems="center"
+        width={'100%'}
+        height={'50%'}
+        gap={4}
+        position="relative"
+      >
         {stages.map(stage => (
           <Box
             key={stage}
             display="flex"
-            flexDirection="column"
-            alignItems="center"
-            border="2px solid"
-            borderColor={theme.palette.primary.main}
-            borderRadius="8px"
+            sx={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              border: '2px solid',
+              borderColor: theme.palette.primary.main,
+              borderRadius: '8px',
+              height: '70%',
+              width: '70%',
+              backgroundColor:
+                stage === errorData?.location
+                  ? theme.palette.productionFlow.activeProblem
+                  : theme.palette.productionFlow.default,
+            }}
           >
             {/* Stage Label */}
             <Typography variant="h6" color="textPrimary">

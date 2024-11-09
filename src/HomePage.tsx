@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { reportTooBrownSausageError, getStatus } from './api';
 import { Typography, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SausageIcon from './icons/burned-sausage.svg';
@@ -14,9 +13,12 @@ const HomePage: React.FC = () => {
     theme.palette.background.default
   );
   const { warnings, isLoading, error } = useWarnings();
-  const reportTooBrownSausage = async () => {
+  const reportTooBrownSausage = async (id: number, warningTypeName: string) => {
     try {
-      const response = await postWarning({ id: 1, warningTypeName: 'burned' });
+      const response = await postWarning({
+        id: id,
+        warningTypeName: warningTypeName,
+      });
       if (response) {
         setIsReportButtonPressed(true);
         setReportButtonColor(theme.palette.primary.main);
@@ -30,6 +32,12 @@ const HomePage: React.FC = () => {
       ? 'Critical'
       : 'Normal';
   };
+  const warningButtons = [
+    { id: 1, warningTypeName: 'burnt' },
+    { id: 2, warningTypeName: 'Too Light' },
+    { id: 3, warningTypeName: 'Too Heavy' },
+    { id: 4, warningTypeName: 'Inconsistent' },
+  ];
 
   return (
     <div
@@ -52,35 +60,21 @@ const HomePage: React.FC = () => {
           //backgroundColor: 'orange',
           backgroundColor: 'transparent',
           height: '100%',
-          width: '100%',
+          width: '80%',
           gap: theme.spacing(3),
         }}
       >
-        <SausageButton
-          onClick={reportTooBrownSausage}
-          isPressed={isReportButtonPressed}
-          buttonColor={reportButtonColor}
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          style={{
-            width: '30%',
-            height: '30%',
-            backgroundColor: theme.palette.background.default,
-            borderColor: theme.palette.primary.main,
-            borderWidth: '5px',
-            borderStyle: 'solid',
-          }}
-          onClick={() => console.log(getSausageStatus())}
-        >
-          <img
-            src={SausageIcon}
-            alt="Sausage Icon"
-            style={{ width: '80%', height: '80%' }}
+        {warningButtons.map(button => (
+          <SausageButton
+            key={button.id}
+            onClick={() =>
+              reportTooBrownSausage(button.id, button.warningTypeName)
+            }
+            isPressed={isReportButtonPressed}
+            buttonColor={reportButtonColor}
+            icon={SausageIcon}
           />
-        </Button>
+        ))}
       </div>
     </div>
   );
