@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import SausageIcon from './icons/burned-sausage.svg';
+import RedScale from './icons/red_scale.svg';
 import SausageButton from './components/common/SausageButton';
+import BadQualityIcon from './icons/bad_quality.svg';
 import ClearWarningsButton from './components/common/ClearWarnings';
 import { postWarning } from './hooks/warnings';
+import { Typography } from '@mui/material';
 import { authenticate, getSystemUser } from './hooks/userAuth.ts';
 import { toast } from 'react-toastify';
 
@@ -46,10 +49,9 @@ const HomePage: React.FC = () => {
     }
   };
   const warningButtons = [
-    { id: 1, warningTypeName: 'Burned' },
-    { id: 2, warningTypeName: 'Too Light' },
-    { id: 3, warningTypeName: 'Too Heavy' },
-    { id: 4, warningTypeName: 'Inconsistent' },
+    { id: 1, warningTypeName: 'Burnt', icon: SausageIcon },
+    { id: 2, warningTypeName: 'Underweight', icon: RedScale },
+    { id: 4, warningTypeName: 'Bad Quality', icon: BadQualityIcon },
   ];
 
   return (
@@ -63,7 +65,15 @@ const HomePage: React.FC = () => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      <ClearWarningsButton />
+      <Typography
+        variant="h2"
+        component="h2"
+        color={theme.palette.primary.main}
+        sx={{ marginTop: 3, fontWeight: 'bold' }}
+      >
+        Report Error
+      </Typography>
+
       <div
         style={{
           display: 'flex',
@@ -73,22 +83,24 @@ const HomePage: React.FC = () => {
           //backgroundColor: 'orange',
           backgroundColor: 'transparent',
           height: '100%',
-          width: '80%',
+          width: '90%',
           gap: theme.spacing(3),
         }}
       >
         {warningButtons.map(button => (
           <SausageButton
             key={button.id}
+            header={button.warningTypeName}
             onClick={() =>
               reportTooBrownSausage(button.id, button.warningTypeName)
             }
             isPressed={isReportButtonPressed}
             buttonColor={reportButtonColor}
-            icon={SausageIcon}
+            icon={button.icon}
           />
         ))}
       </div>
+      <ClearWarningsButton />
     </div>
   );
 };

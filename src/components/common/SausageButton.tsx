@@ -1,11 +1,12 @@
 import React from 'react';
-import { Button, useTheme } from '@mui/material';
+import { Button, Typography, useTheme } from '@mui/material';
 
 interface SausageButtonProps {
   onClick: () => void;
   isPressed?: boolean;
   buttonColor?: string;
   icon: string;
+  header: string;
 }
 
 const SausageButton: React.FC<SausageButtonProps> = ({
@@ -13,6 +14,7 @@ const SausageButton: React.FC<SausageButtonProps> = ({
   isPressed = false,
   buttonColor,
   icon,
+  header,
 }) => {
   const theme = useTheme();
 
@@ -21,13 +23,14 @@ const SausageButton: React.FC<SausageButtonProps> = ({
       variant="contained"
       color="primary"
       style={{
-        width: '30%',
-        height: '30%',
+        width: '50%',
+        height: '50%',
         backgroundColor: isPressed
           ? theme.palette.primary.dark
           : buttonColor || theme.palette.background.default,
         borderColor: theme.palette.primary.main,
         borderWidth: '2px',
+        flexDirection: 'column',
         borderStyle: 'solid',
         display: 'flex',
         alignItems: 'center',
@@ -41,6 +44,13 @@ const SausageButton: React.FC<SausageButtonProps> = ({
       }}
       onClick={onClick}
     >
+      <Typography
+        color={theme.palette.primary.main}
+        variant="h5"
+        sx={{ fontWeight: 'bold' }}
+      >
+        {header}{' '}
+      </Typography>
       <img
         src={icon}
         alt="Sausage Icon"

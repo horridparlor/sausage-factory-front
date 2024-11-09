@@ -13,7 +13,12 @@ const ClearWarningsButton: React.FC = () => {
   };
 
   return (
-    <Button variant="contained" color="secondary" onClick={handleClearWarnings}>
+    <Button
+      variant="contained"
+      color="secondary"
+      onClick={handleClearWarnings}
+      sx={{ marginBottom: 5 }}
+    >
       Clear All Warnings
     </Button>
   );

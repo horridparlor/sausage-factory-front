@@ -14,9 +14,9 @@ interface ErrorData {
 const DashBoard: React.FC = () => {
   const theme = useTheme();
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
+  // Use the warnings hook
   const { subprocesses } = useSubprocesses();
   const { warnings, isLoading, error } = useWarnings();
-
   useEffect(() => {
     if (!isLoading && warnings.length > 0) {
       const firstWarning = warnings[0];
