@@ -12,6 +12,11 @@ interface ErrorData {
   message: string;
   location: string;
 }
+const iconMap: { [key: string]: string } = {
+  burned: Burned,
+  underweight: Underweight,
+  inconsistent: Inconsistent,
+};
 
 const DashBoard: React.FC = () => {
   const theme = useTheme();
@@ -22,8 +27,9 @@ const DashBoard: React.FC = () => {
   useEffect(() => {
     if (!isLoading && warnings.length > 0) {
       const firstWarning = warnings[0];
+      const icon = iconMap[firstWarning.warningTypeName.toLowerCase()] || '';
       setErrorData({
-        icon: firstWarning.warningTypeName,
+        icon: icon,
         message: firstWarning.warningTypeName,
         location: firstWarning.subprocessName,
       });
@@ -48,11 +54,11 @@ const DashBoard: React.FC = () => {
       justifyContent="center"
       height="100vh"
       bgcolor={theme.palette.background.default}
-      padding={4}
+      padding={2}
     >
       <Box
         sx={{
-          height: '20%',
+          height: '10%',
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
@@ -80,7 +86,7 @@ const DashBoard: React.FC = () => {
               border: '2px solid',
               borderColor: theme.palette.primary.main,
               borderRadius: '8px',
-              height: '70%',
+              height: '60%',
               width: '70%',
               backgroundColor:
                 subprocess.name === errorData?.location
@@ -116,7 +122,7 @@ const DashBoard: React.FC = () => {
           <img
             src={errorData.icon}
             alt="Burned Sausage Icon"
-            style={{ width: '60%', height: '60%' }}
+            style={{ width: '200px', height: '200px', marginTop: '-60px' }}
           />
           <Typography variant="body2" color="error" mt={1}>
             {errorData.message}

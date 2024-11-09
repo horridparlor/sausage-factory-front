@@ -2,7 +2,12 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { clearWarnings } from '../../hooks/warnings';
 
-const ClearWarningsButton: React.FC = () => {
+type ClearWarningsProps = {
+  onClick: (value: boolean) => void;
+};
+
+const ClearWarningsButton: React.FC<ClearWarningsProps> = props => {
+  const { onClick } = props;
   const handleClearWarnings = async () => {
     const success = await clearWarnings();
     if (success) {
@@ -16,7 +21,10 @@ const ClearWarningsButton: React.FC = () => {
     <Button
       variant="contained"
       color="secondary"
-      onClick={handleClearWarnings}
+      onClick={() => {
+        onClick(false);
+        handleClearWarnings();
+      }}
       sx={{ marginBottom: 5 }}
     >
       Clear All Warnings

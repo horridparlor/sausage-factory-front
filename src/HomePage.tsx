@@ -31,6 +31,10 @@ const HomePage: React.FC = () => {
   const [reportButtonColor, setReportButtonColor] = useState(
     theme.palette.background.default
   );
+  const setButtonState = (value: boolean) => {
+    setIsReportButtonPressed(value);
+    setReportButtonColor(value ? theme.palette.primary.main : '#FFFFFF');
+  };
   const reportTooBrownSausage = async (id: number, warningTypeName: string) => {
     try {
       await autoAuth();
@@ -39,8 +43,7 @@ const HomePage: React.FC = () => {
         name: warningTypeName,
       });
       if (response) {
-        setIsReportButtonPressed(true);
-        setReportButtonColor(theme.palette.primary.main);
+        setButtonState(true);
       } else {
         await autoAuth(true);
       }
@@ -100,7 +103,7 @@ const HomePage: React.FC = () => {
           />
         ))}
       </div>
-      <ClearWarningsButton />
+      <ClearWarningsButton onClick={setButtonState} />
     </div>
   );
 };
