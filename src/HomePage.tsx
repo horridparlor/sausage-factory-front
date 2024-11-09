@@ -4,6 +4,8 @@ import { Typography, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SausageIcon from './icons/burned-sausage.svg';
 import SausageButton from './components/common/SausageButton';
+import ClearWarningsButton from './components/common/ClearWarnings';
+import { postWarning, useWarnings, clearWarnings } from './hooks/warnings';
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
@@ -11,27 +13,24 @@ const HomePage: React.FC = () => {
   const [reportButtonColor, setReportButtonColor] = useState(
     theme.palette.background.default
   );
-
+  const { warnings, isLoading, error } = useWarnings();
   const reportTooBrownSausage = async () => {
     try {
-      setIsReportButtonPressed(true);
-      await reportTooBrownSausageError();
-      console.log('Error reported successfully');
-      setReportButtonColor(theme.palette.primary.main);
+      const response = await postWarning({ id: 1, warningTypeName: 'burned' });
+      if (response) {
+        setIsReportButtonPressed(true);
+        setReportButtonColor(theme.palette.primary.main);
+      }
     } catch (error) {
       console.error(error);
     }
+  };
+  const getSausageStatus = () => {
+    return warnings.some(warning => warning.warningTypeName === 'burned')
+      ? 'Critical'
+      : 'Normal';
   };
 
-  const getSausageStatus = async () => {
-    try {
-      const status = await getStatus();
-      console.log(status);
-      console.log('Succesful status call');
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <div
       style={{
@@ -43,6 +42,7 @@ const HomePage: React.FC = () => {
         backgroundColor: theme.palette.background.default,
       }}
     >
+      <ClearWarningsButton />
       <div
         style={{
           display: 'flex',
@@ -73,7 +73,7 @@ const HomePage: React.FC = () => {
             borderWidth: '5px',
             borderStyle: 'solid',
           }}
-          onClick={getSausageStatus}
+          onClick={() => console.log(getSausageStatus())}
         >
           <img
             src={SausageIcon}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { reportTooBrownSausageError } from './api';
 import { Box, Typography, useTheme } from '@mui/material';
 import SausageIcon from './icons/burned-sausage.svg';
+import { useWarnings, clearWarnings } from './hooks/warnings';
 
 interface ErrorData {
   icon: string;
@@ -13,25 +13,33 @@ const DashBoard: React.FC = () => {
   const theme = useTheme();
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
 
-  useEffect(() => {
-    const fetchErrorData = async () => {
-      try {
-        //const data = await reportTooBrownSausageError();
-        setErrorData({
-          icon: SausageIcon,
-          message: 'Burned Sausage',
-          location: 'A',
-        });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  // Use the warnings hook
+  const { warnings, isLoading, error } = useWarnings();
 
-    fetchErrorData();
-  }, []);
+  useEffect(() => {
+    if (!isLoading && warnings.length > 0) {
+      // Map the first warning to errorData format (or adjust as needed)
+      const firstWarning = warnings[0];
+      setErrorData({
+        icon: SausageIcon,
+        message: firstWarning.warningTypeName,
+        location: firstWarning.subprocessName,
+      });
+    } else {
+      const timer = setTimeout(() => {
+        setErrorData(null);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+
+    if (error) {
+      console.error('Error fetching warnings:', error);
+    }
+  }, [warnings, isLoading, error]);
 
   const stages = ['A', 'B', 'C', 'D'];
-
+  console.log(errorData);
   return (
     <Box
       display="flex"
@@ -77,7 +85,7 @@ const DashBoard: React.FC = () => {
       {errorData && (
         <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
           <img
-            src={SausageIcon}
+            src={errorData.icon}
             alt="Burned Sausage Icon"
             style={{ width: '40px', height: '40px' }}
           />

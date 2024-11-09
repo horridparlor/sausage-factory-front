@@ -14,10 +14,13 @@ export const postWarning = async (
   const params = {
     warningTypeId: warningType.id,
   };
-  const { data: responseData, error } = await apiClient.POST('/user/warning', {
-    headers: getHeaders(),
-    body: params,
-  });
+  const { data: responseData, error } = await apiClient.POST(
+    'api/user/warning',
+    {
+      headers: getHeaders(),
+      body: params,
+    }
+  );
   if (error) {
     showError(error);
     return false;
@@ -27,7 +30,7 @@ export const postWarning = async (
 
 export const clearWarnings = async (): Promise<StandardSuccess | false> => {
   const { data: responseData, error } = await apiClient.DELETE(
-    '/user/warnings',
+    'api/user/warnings',
     {
       headers: getHeaders(),
     }
@@ -47,11 +50,12 @@ export const useWarnings = () => {
   const fetchWarnings = async () => {
     setIsLoading(true);
     const { data: responseData, error } = await apiClient.GET(
-      '/user/warnings',
+      'api/user/warnings',
       {
         headers: getHeaders(),
       }
     );
+    console.log(responseData);
     if (error) {
       setError(error);
       setIsLoading(false);
@@ -79,7 +83,7 @@ export const useWarningTypes = () => {
   const fetchWarningTypes = async () => {
     setIsLoading(true);
     const { data: responseData, error } = await apiClient.GET(
-      '/user/warning-types',
+      'api/user/warning-types',
       {
         headers: getHeaders(),
       }

@@ -9,5 +9,5 @@ export type ProcessWarning = {
 
 export type ProcessWarningType = {
   id: number;
-  name: string;
+  warningTypeName: string;
 };
