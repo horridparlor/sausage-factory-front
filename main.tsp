@@ -59,6 +59,26 @@ model ListWarningsResponse {
     warnings: ProcessWarning[];
 }
 
+// ––– WarningTypes
+@route("user/warning-types")
+namespace WarningTypes {
+  @get
+  op listWarningTypes(): {
+    @statusCode statusCode: 200;
+    @body response: ListWarningTypesResponse;
+  };
+}
+
+model ListWarningTypesResponse {
+    countOfWarningTypes: int32;
+    warningTypes: ProcessWarningType[];
+}
+
+model ProcessWarningType {
+    id: int32;
+    name: string;
+}
+
 // ––– User
 @route("user/user")
 namespace User {
@@ -75,8 +95,8 @@ model PostUserRequest {
     lastname?: string;
     password: string;
     subprocessId: int32;
-    roleId: int32;
-    accessRights: AccessRights;
+    roleId?: int32;
+    accessRights?: AccessRights;
 }
 
 model AccessRights {
@@ -118,12 +138,12 @@ model StandardSuccess {
 }
 model ErrorUnauthorized {
     @statusCode statusCode: 401;
-    @body error: Error;
+    @body error: StandardError;
 }
 model ErrorNotFound {
     @statusCode statusCode: 404;
-    @body error: Error;
+    @body error: StandardError;
 }
-model Error {
+model StandardError {
     error: string;
 }
