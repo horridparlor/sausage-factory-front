@@ -114,7 +114,7 @@ const DashBoard: React.FC = () => {
           <img
             src={errorData.icon}
             alt="Burned Sausage Icon"
-            style={{ width: '40px', height: '40px' }}
+            style={{ width: '60%', height: '60%' }}
           />
           <Typography variant="body2" color="error" mt={1}>
             {errorData.message}
