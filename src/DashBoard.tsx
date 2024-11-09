@@ -15,13 +15,11 @@ const DashBoard: React.FC = () => {
   const theme = useTheme();
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
   const { subprocesses } = useSubprocesses();
-
-  // Use the warnings hook
+  console.log(222, subprocesses);
   const { warnings, isLoading, error } = useWarnings();
 
   useEffect(() => {
     if (!isLoading && warnings.length > 0) {
-      // Map the first warning to errorData format (or adjust as needed)
       const firstWarning = warnings[0];
       setErrorData({
         icon: SausageIcon,

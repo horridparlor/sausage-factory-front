@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { LineSubprocess } from '../types/subprocess.ts';
 import { apiClient } from '../api/client.ts';
 import { getHeaders, UpdateFrequencies } from '../types/api.ts';
-import { ProcessWarningType } from '../types/warning.ts';
 
 export const useSubprocesses = () => {
   const [subprocesses, setSubprocesses] = useState<Array<LineSubprocess>>([]);
@@ -21,7 +20,7 @@ export const useSubprocesses = () => {
       setError(error);
       setIsLoading(false);
     }
-    const subprocesses = responseData.subprocesses as LineSubprocess[];
+    const subprocesses = responseData.subprocesses;
     setSubprocesses(subprocesses);
     setIsLoading(false);
   };
