@@ -3,12 +3,12 @@ import { useTheme } from '@mui/material/styles';
 import SausageIcon from './icons/burned-sausage.svg';
 import SausageButton from './components/common/SausageButton';
 import ClearWarningsButton from './components/common/ClearWarnings';
-import { postWarning, useWarnings } from './hooks/warnings';
+import { postWarning } from './hooks/warnings';
 import { authenticate, getSystemUser } from './hooks/userAuth.ts';
 import { toast } from 'react-toastify';
 
-const autoAuth = async () => {
-  if (getSystemUser()) {
+const autoAuth = async (force: boolean = false) => {
+  if (getSystemUser() && !force) {
     return;
   }
   const auth = await authenticate(
@@ -28,29 +28,25 @@ const HomePage: React.FC = () => {
   const [reportButtonColor, setReportButtonColor] = useState(
     theme.palette.background.default
   );
-  const { warnings, isLoading, error } = useWarnings();
   const reportTooBrownSausage = async (id: number, warningTypeName: string) => {
     try {
       await autoAuth();
       const response = await postWarning({
         id: id,
-        warningTypeName: warningTypeName,
+        name: warningTypeName,
       });
       if (response) {
         setIsReportButtonPressed(true);
         setReportButtonColor(theme.palette.primary.main);
+      } else {
+        await autoAuth(true);
       }
     } catch (error) {
       console.error(error);
     }
   };
-  const getSausageStatus = () => {
-    return warnings.some(warning => warning.warningTypeName === 'burned')
-      ? 'Critical'
-      : 'Normal';
-  };
   const warningButtons = [
-    { id: 1, warningTypeName: 'burnt' },
+    { id: 1, warningTypeName: 'Burned' },
     { id: 2, warningTypeName: 'Too Light' },
     { id: 3, warningTypeName: 'Too Heavy' },
     { id: 4, warningTypeName: 'Inconsistent' },

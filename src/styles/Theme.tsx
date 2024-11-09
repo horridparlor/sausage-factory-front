@@ -3,9 +3,17 @@ import { createTheme } from '@mui/material/styles';
 declare module '@mui/material/styles' {
   interface Palette {
     tooBrown: Palette['primary'];
+    productionFlow: {
+      default: string;
+      activeProblem: string;
+    };
   }
   interface PaletteOptions {
     tooBrown?: PaletteOptions['primary'];
+    productionFlow?: {
+      default?: string;
+      activeProblem?: string;
+    };
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import SausageIcon from './icons/burned-sausage.svg';
 import { useWarnings } from './hooks/warnings';
@@ -15,7 +15,6 @@ const DashBoard: React.FC = () => {
   const theme = useTheme();
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
   const { subprocesses } = useSubprocesses();
-  console.log(222, subprocesses);
   const { warnings, isLoading, error } = useWarnings();
 
   useEffect(() => {
@@ -82,7 +81,7 @@ const DashBoard: React.FC = () => {
               height: '70%',
               width: '70%',
               backgroundColor:
-                subprocess.code === errorData?.location
+                subprocess.name === errorData?.location
                   ? theme.palette.productionFlow.activeProblem
                   : theme.palette.productionFlow.default,
             }}
@@ -102,6 +101,9 @@ const DashBoard: React.FC = () => {
                 marginBottom={1}
               />
             }
+            <Typography variant="h4" color="#555555">
+              {subprocess.name}
+            </Typography>
 
             {/* Error Icon and Message if the error stage matches */}
           </Box>

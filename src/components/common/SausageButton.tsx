@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, useTheme } from '@mui/material';
-import SausageIcon from '../../icons/burned-sausage.svg';
 
 interface SausageButtonProps {
   onClick: () => void;
