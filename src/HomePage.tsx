@@ -2,6 +2,7 @@ import React from 'react';
 import { reportTooBrownSausageError, getStatus } from './api';
 import { Typography, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import SausageIcon from './icons/sausage.svg';
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
@@ -25,32 +26,75 @@ const HomePage: React.FC = () => {
     }
   };
   return (
-    <div style={{ padding: theme.spacing(4) }}>
-      <Typography
-        variant="h1"
-        color="primary"
-        style={{ fontFamily: theme.typography.fontFamily }}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        backgroundColor: theme.palette.background.default,
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          //backgroundColor: 'orange',
+          backgroundColor: 'transparent',
+          height: '100%',
+          width: '100%',
+          gap: theme.spacing(3),
+        }}
       >
-        Welcome to the Sausage Factory Dashboard!
-      </Typography>
-      <h1>Welcome to the Sausage Factory Dashboard!</h1>
-      <p>Automate your sausage production with ease!</p>
-      <Button
-        variant="contained"
-        color="error" // Use theme-defined error color
-        style={{ marginTop: theme.spacing(2) }}
-        onClick={reportTooBrownSausage}
-      >
-        Report Too Brown Sausage
-      </Button>
-      <Button
-        variant="contained"
-        color="error" // Use theme-defined error color
-        style={{ marginTop: theme.spacing(2) }}
-        onClick={getSausageStatus}
-      >
-        Get Status
-      </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{
+            width: '30%',
+            height: '30%',
+            backgroundColor: theme.palette.background.default,
+            borderColor: theme.palette.primary.main,
+            borderWidth: '5px',
+            borderStyle: 'solid',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onClick={reportTooBrownSausage}
+        >
+          <img
+            src={SausageIcon}
+            alt="Sausage Icon"
+            style={{
+              width: '80%',
+              height: '80%',
+              backgroundColor: theme.palette.tooBrown.main,
+            }}
+          />
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{
+            width: '30%',
+            height: '30%',
+            backgroundColor: theme.palette.background.default,
+            borderColor: theme.palette.primary.main,
+            borderWidth: '5px',
+            borderStyle: 'solid',
+          }}
+          onClick={getSausageStatus}
+        >
+          <img
+            src={SausageIcon}
+            alt="Sausage Icon"
+            style={{ width: '80%', height: '80%' }}
+          />
+        </Button>
+      </div>
     </div>
   );
 };

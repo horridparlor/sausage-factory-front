@@ -1,4 +1,13 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, PaletteOptions } from '@mui/material/styles';
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    tooBrown: Palette['primary'];
+  }
+  interface PaletteOptions {
+    tooBrown?: PaletteOptions['primary'];
+  }
+}
 
 export const theme = createTheme({
   typography: {
@@ -6,7 +15,7 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#556cd6',
+      main: '#001f3f',
     },
     secondary: {
       main: '#19857b',
@@ -19,6 +28,13 @@ export const theme = createTheme({
     },
     error: {
       main: '#f44336',
+    },
+    tooBrown: {
+      main: '#8B4513',
+    },
+    background: {
+      default: '#f4f6f9',
+      paper: '#e8ebed',
     },
   },
 });
