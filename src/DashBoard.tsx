@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
-import SausageIcon from './icons/burned-sausage.svg';
+import Burned from './icons/burned-sausage.svg';
+import Underweight from './icons/red_scale.svg';
+import Inconsistent from './icons/bad_quality.svg';
 import { useWarnings } from './hooks/warnings';
 import ArrowWithText from './components/common/Arrow';
 import { useSubprocesses } from './hooks/subprocesses.ts';
@@ -21,7 +23,7 @@ const DashBoard: React.FC = () => {
     if (!isLoading && warnings.length > 0) {
       const firstWarning = warnings[0];
       setErrorData({
-        icon: SausageIcon,
+        icon: firstWarning.warningTypeName,
         message: firstWarning.warningTypeName,
         location: firstWarning.subprocessName,
       });
