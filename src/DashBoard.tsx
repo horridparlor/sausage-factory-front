@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 import SausageIcon from './icons/burned-sausage.svg';
+import { useWarnings } from './hooks/warnings';
+import ArrowWithText from './components/common/Arrow';
+import { useSubprocesses } from './hooks/subprocesses.ts';
 
 interface ErrorData {
   icon: string;
@@ -11,25 +14,32 @@ interface ErrorData {
 const DashBoard: React.FC = () => {
   const theme = useTheme();
   const [errorData, setErrorData] = useState<ErrorData | null>(null);
+  const { subprocesses } = useSubprocesses();
+
+  // Use the warnings hook
+  const { warnings, isLoading, error } = useWarnings();
 
   useEffect(() => {
-    const fetchErrorData = async () => {
-      try {
-        //const data = await reportTooBrownSausageError();
-        setErrorData({
-          icon: SausageIcon,
-          message: 'Burned Sausage',
-          location: 'A',
-        });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+    if (!isLoading && warnings.length > 0) {
+      // Map the first warning to errorData format (or adjust as needed)
+      const firstWarning = warnings[0];
+      setErrorData({
+        icon: SausageIcon,
+        message: firstWarning.warningTypeName,
+        location: firstWarning.subprocessName,
+      });
+    } else {
+      const timer = setTimeout(() => {
+        setErrorData(null);
+      }, 1000);
 
-    fetchErrorData();
-  }, []);
+      return () => clearTimeout(timer);
+    }
 
-  const stages = ['A', 'B', 'C', 'D'];
+    if (error) {
+      console.error('Error fetching warnings:', error);
+    }
+  }, [warnings, isLoading, error]);
 
   return (
     <Box
@@ -41,21 +51,47 @@ const DashBoard: React.FC = () => {
       bgcolor={theme.palette.background.default}
       padding={4}
     >
+      <Box
+        sx={{
+          height: '20%',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <ArrowWithText />
+      </Box>
       {/* Production Flow Line */}
-      <Box display="flex" alignItems="center" gap={4} position="relative">
-        {stages.map(stage => (
+      <Box
+        display="flex"
+        alignItems="center"
+        width={'100%'}
+        height={'50%'}
+        gap={4}
+        position="relative"
+      >
+        {subprocesses.map(subprocess => (
           <Box
-            key={stage}
+            key={subprocess.code}
             display="flex"
-            flexDirection="column"
-            alignItems="center"
-            border="2px solid"
-            borderColor={theme.palette.primary.main}
-            borderRadius="8px"
+            sx={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              border: '2px solid',
+              borderColor: theme.palette.primary.main,
+              borderRadius: '8px',
+              height: '70%',
+              width: '70%',
+              backgroundColor:
+                subprocess.code === errorData?.location
+                  ? theme.palette.productionFlow.activeProblem
+                  : theme.palette.productionFlow.default,
+            }}
           >
             {/* Stage Label */}
             <Typography variant="h6" color="textPrimary">
-              {stage}
+              {subprocess.code}
             </Typography>
 
             {/* Line connecting stages */}
@@ -76,7 +112,7 @@ const DashBoard: React.FC = () => {
       {errorData && (
         <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
           <img
-            src={SausageIcon}
+            src={errorData.icon}
             alt="Burned Sausage Icon"
             style={{ width: '40px', height: '40px' }}
           />

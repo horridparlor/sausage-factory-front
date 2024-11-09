@@ -6,12 +6,14 @@ interface SausageButtonProps {
   onClick: () => void;
   isPressed?: boolean;
   buttonColor?: string;
+  icon: string;
 }
 
 const SausageButton: React.FC<SausageButtonProps> = ({
   onClick,
   isPressed = false,
   buttonColor,
+  icon,
 }) => {
   const theme = useTheme();
 
@@ -41,7 +43,7 @@ const SausageButton: React.FC<SausageButtonProps> = ({
       onClick={onClick}
     >
       <img
-        src={SausageIcon}
+        src={icon}
         alt="Sausage Icon"
         style={{
           width: '80%',

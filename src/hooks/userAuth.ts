@@ -29,6 +29,7 @@ export const authenticate = async (
     username: username,
     password: password,
   };
+  console.log(88, params);
   const { data: responseData, error } = await apiClient.POST(
     '/user/authenticate',
     {
@@ -36,6 +37,7 @@ export const authenticate = async (
       body: params,
     }
   );
+  console.log(999);
   if (error) {
     showError(error);
     return false;

@@ -52,6 +52,7 @@ export const useWarnings = () => {
         headers: getHeaders(),
       }
     );
+    console.log(responseData);
     if (error) {
       setError(error);
       setIsLoading(false);
@@ -88,8 +89,7 @@ export const useWarningTypes = () => {
       setError(error);
       setIsLoading(false);
     }
-    const warningTypes =
-      responseData.warningTypes as unknown as ProcessWarningType[];
+    const warningTypes = responseData.warningTypes as ProcessWarningType[];
     setWarningTypes(warningTypes);
     setIsLoading(false);
   };

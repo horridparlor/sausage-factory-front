@@ -1,9 +1,26 @@
 import React, { useState } from 'react';
-import { reportTooBrownSausageError, getStatus } from './api';
-import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SausageIcon from './icons/burned-sausage.svg';
 import SausageButton from './components/common/SausageButton';
+import ClearWarningsButton from './components/common/ClearWarnings';
+import { postWarning, useWarnings } from './hooks/warnings';
+import { authenticate, getSystemUser } from './hooks/userAuth.ts';
+import { toast } from 'react-toastify';
+
+const autoAuth = async () => {
+  if (getSystemUser()) {
+    return;
+  }
+  const auth = await authenticate(
+    import.meta.env.VITE_REACT_APP_USERNAME ?? '',
+    import.meta.env.VITE_REACT_APP_PASSWORD ?? ''
+  );
+  if (auth) {
+    toast.success('Authenticated');
+  } else {
+    toast.error('Authentication failed');
+  }
+};
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
@@ -11,27 +28,34 @@ const HomePage: React.FC = () => {
   const [reportButtonColor, setReportButtonColor] = useState(
     theme.palette.background.default
   );
-
-  const reportTooBrownSausage = async () => {
+  const { warnings, isLoading, error } = useWarnings();
+  const reportTooBrownSausage = async (id: number, warningTypeName: string) => {
     try {
-      setIsReportButtonPressed(true);
-      await reportTooBrownSausageError();
-      console.log('Error reported successfully');
-      setReportButtonColor(theme.palette.primary.main);
+      await autoAuth();
+      const response = await postWarning({
+        id: id,
+        warningTypeName: warningTypeName,
+      });
+      if (response) {
+        setIsReportButtonPressed(true);
+        setReportButtonColor(theme.palette.primary.main);
+      }
     } catch (error) {
       console.error(error);
     }
   };
-
-  const getSausageStatus = async () => {
-    try {
-      const status = await getStatus();
-      console.log(status);
-      console.log('Succesful status call');
-    } catch (error) {
-      console.error(error);
-    }
+  const getSausageStatus = () => {
+    return warnings.some(warning => warning.warningTypeName === 'burned')
+      ? 'Critical'
+      : 'Normal';
   };
+  const warningButtons = [
+    { id: 1, warningTypeName: 'burnt' },
+    { id: 2, warningTypeName: 'Too Light' },
+    { id: 3, warningTypeName: 'Too Heavy' },
+    { id: 4, warningTypeName: 'Inconsistent' },
+  ];
+
   return (
     <div
       style={{
@@ -43,6 +67,7 @@ const HomePage: React.FC = () => {
         backgroundColor: theme.palette.background.default,
       }}
     >
+      <ClearWarningsButton />
       <div
         style={{
           display: 'flex',
@@ -52,35 +77,21 @@ const HomePage: React.FC = () => {
           //backgroundColor: 'orange',
           backgroundColor: 'transparent',
           height: '100%',
-          width: '100%',
+          width: '80%',
           gap: theme.spacing(3),
         }}
       >
-        <SausageButton
-          onClick={reportTooBrownSausage}
-          isPressed={isReportButtonPressed}
-          buttonColor={reportButtonColor}
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          style={{
-            width: '30%',
-            height: '30%',
-            backgroundColor: theme.palette.background.default,
-            borderColor: theme.palette.primary.main,
-            borderWidth: '5px',
-            borderStyle: 'solid',
-          }}
-          onClick={getSausageStatus}
-        >
-          <img
-            src={SausageIcon}
-            alt="Sausage Icon"
-            style={{ width: '80%', height: '80%' }}
+        {warningButtons.map(button => (
+          <SausageButton
+            key={button.id}
+            onClick={() =>
+              reportTooBrownSausage(button.id, button.warningTypeName)
+            }
+            isPressed={isReportButtonPressed}
+            buttonColor={reportButtonColor}
+            icon={SausageIcon}
           />
-        </Button>
+        ))}
       </div>
     </div>
   );

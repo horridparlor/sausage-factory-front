@@ -79,6 +79,27 @@ model ProcessWarningType {
     name: string;
 }
 
+// ––– Subprocesses
+@route("user/subprocesses")
+namespace Subprocesses {
+  @get
+  op listSubprocesses(): {
+    @statusCode statusCode: 200;
+    @body response: ListSubprocessesResponse;
+  };
+}
+
+model ListSubprocessesResponse {
+    countOfSubprocesses: int32;
+    subprocesses: LineSubprocess[];
+}
+
+model LineSubprocess {
+    id: int32;
+    name: string;
+    code: string
+}
+
 // ––– User
 @route("user/user")
 namespace User {
