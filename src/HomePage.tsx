@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { reportTooBrownSausageError, getStatus } from './api';
 import { Typography, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import SausageIcon from './icons/sausage.svg';
+import SausageIcon from './icons/burned-sausage.svg';
+import SausageButton from './components/common/SausageButton';
 
 const HomePage: React.FC = () => {
   const theme = useTheme();
+  const [isReportButtonPressed, setIsReportButtonPressed] = useState(false);
+  const [reportButtonColor, setReportButtonColor] = useState(
+    theme.palette.background.default
+  );
 
   const reportTooBrownSausage = async () => {
     try {
+      setIsReportButtonPressed(true);
       await reportTooBrownSausageError();
       console.log('Error reported successfully');
+      setReportButtonColor(theme.palette.primary.main);
     } catch (error) {
       console.error(error);
     }
@@ -49,32 +56,12 @@ const HomePage: React.FC = () => {
           gap: theme.spacing(3),
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          style={{
-            width: '30%',
-            height: '30%',
-            backgroundColor: theme.palette.background.default,
-            borderColor: theme.palette.primary.main,
-            borderWidth: '5px',
-            borderStyle: 'solid',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+        <SausageButton
           onClick={reportTooBrownSausage}
-        >
-          <img
-            src={SausageIcon}
-            alt="Sausage Icon"
-            style={{
-              width: '80%',
-              height: '80%',
-              backgroundColor: theme.palette.tooBrown.main,
-            }}
-          />
-        </Button>
+          isPressed={isReportButtonPressed}
+          buttonColor={reportButtonColor}
+        />
+
         <Button
           variant="contained"
           color="primary"
