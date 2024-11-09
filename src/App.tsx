@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import HomePage from './HomePage';
+import DashBoard from './DashBoard';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/dashboard" element={<DashBoard />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer position="bottom-right" autoClose={2000} />
