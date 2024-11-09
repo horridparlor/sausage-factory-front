@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { reportTooBrownSausageError } from './api';
 import { Box, Typography, useTheme } from '@mui/material';
 import SausageIcon from './icons/burned-sausage.svg';
 

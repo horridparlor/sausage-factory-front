@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { reportTooBrownSausageError, getStatus } from './api';
-import { Typography, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SausageIcon from './icons/burned-sausage.svg';
 import SausageButton from './components/common/SausageButton';
